@@ -51,6 +51,19 @@ h1 {
 """
 st.markdown(streamlit_style, unsafe_allow_html=True)
 
+_webui_password = config.app.get("webui_password", "")
+if _webui_password:
+    if not st.session_state.get("_authenticated"):
+        st.title("MoneyPrinterTurbo")
+        pwd = st.text_input("Password", type="password")
+        if st.button("Login"):
+            if pwd == _webui_password:
+                st.session_state["_authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+        st.stop()
+
 # 定义资源目录
 font_dir = os.path.join(root_dir, "resource", "fonts")
 song_dir = os.path.join(root_dir, "resource", "songs")
